@@ -1,0 +1,55 @@
+<launch>
+
+<!--LOAD The URDF to the parameter server-->
+
+<!--CHECK BOTH RVIZ AND URDF-->
+<param name="robot_description" textfile="$(find manipulation)/scorbot_description/urdf/scorbot_urdf.urdf" />
+<!--SHOW RVIZ-->
+<node name="rviz" pkg="rviz" type="rviz" arg="(find scorbot_moveit_config_2)/launch/moveit.rviz" />
+
+
+<!--FRom tutorial setup up/down -->>
+<!--CORE-->
+
+<!--CONTROLLER MANANGER IS WHERE WE MOST LIKELY WILL DEAL WITH JOYSTICK/TELEOP CONTROL-->
+    <!-- Load controller settings -->
+<rosparam file="$(find scorbot_control)/cfg/scorbot_controllers.yaml" command="load" />
+
+<!-- Load hardware interface -->
+<node name="scorbot_hw_main" pkg="scorobt_control" type="scorbot_hw_main" output="screen" />
+
+
+    <!-- Load controller manager -->
+<node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false"
+ output="screen" args="spawn joint_state_controller position_trajectory_controller" />
+
+    <!-- Convert joint states to /tf tranforms -->
+<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+<!--MOVEIT -->
+
+<!--LOad URDF, SRDF and .yaml configuration files on the param server-->
+<include file="$(find scorbot_moveit_config_2)/launch/planning_context.launch" />
+<arg name="load_robot_description" value="true"/>
+
+
+
+
+
+<!--REMAP FOllow JOint trajectory-->
+<remap from="/joint_trajectory_action" to="/position_trajectory_controller/follow_joint_trajectory" />
+
+  <!-- Run the main MoveIt! executable without trajectory execution (we do not have controllers configured by default) -->
+  <include file="$(find scorbot_moveit_config_2)/launch/move_group.launch">
+  <arg name="allow_trajectory_execution" value="true"/>
+   <arg name="fake_execution" value="false"/>
+   <arg name="info" value="true"/>
+  </include>
+
+  <!-- If database loading was enabled, start mongodb as well -->
+
+
+
+
+
+</launch>
