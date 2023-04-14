@@ -1,11 +1,18 @@
+
 <launch>
 
 <!--LOAD The URDF to the parameter server-->
 
 <!--CHECK BOTH RVIZ AND URDF-->
+<!--Hardware = URDF SImulation = .xacro-->>
 <param name="robot_description" textfile="$(find manipulation)/scorbot_description/urdf/scorbot_urdf.urdf" />
 <!--SHOW RVIZ-->
 <node name="rviz" pkg="rviz" type="rviz" arg="(find scorbot_moveit_config_2)/launch/moveit.rviz" />
+<!--FRom Example-->
+
+<group ns='scorbot_namespace'>
+
+
 
 
 <!--FRom tutorial setup up/down -->>
@@ -16,12 +23,13 @@
 <rosparam file="$(find scorbot_control)/cfg/scorbot_controllers.yaml" command="load" />
 
 <!-- Load hardware interface -->
-<node name="scorbot_hw_main" pkg="scorobt_control" type="scorbot_hw_main" output="screen" />
+<node name="scorbot_hw_main" pkg="scorbot_control" type="scorbot_hw_main" output="screen" />
 
+<!--HARDWARE Effort Trajectory controller. Sim = position trajectory controller-->>
 
     <!-- Load controller manager -->
 <node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false"
- output="screen" args="spawn joint_state_controller position_trajectory_controller" />
+ output="screen" args="spawn joint_state_controller effort_trajectory_controller" />
 
     <!-- Convert joint states to /tf tranforms -->
 <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
@@ -34,6 +42,30 @@
 
 
 
+
+
+
+
+
+
+
+
+
+  <!-- If needed, broadcast static tf for robot root -->
+  
+
+
+
+
+
+
+
+
+
+
+
+
+<!--NOT IN EXAMPLE-->
 
 
 <!--REMAP FOllow JOint trajectory-->
@@ -50,6 +82,6 @@
 
 
 
-
+ </group>
 
 </launch>

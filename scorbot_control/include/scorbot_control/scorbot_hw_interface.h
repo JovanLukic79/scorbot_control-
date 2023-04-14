@@ -22,6 +22,8 @@ public:
        */
     ScorbotHWInterface(ros::NodeHandle& nh, urdf::Model* urdf_model = NULL);
 
+    void telemetryCallback(const scorbot_control::scorbot_telemetry::ConstPtr &msg);   
+
         /** \brie(f) Initialize the robot hardware interface */
     virtual void init();
 
@@ -37,9 +39,11 @@ public:
 protected:
   
    ros::Subscriber telemetry_sub;
-   void telemetryCallback(const scorbot_control::scorbot_telemetry::ConstPtr &msg); 
 
    ros::Publisher cmd_pub;
+   //Defining scorbot_input_msg_ and scorbot_output_msg
+   scorbot_control::arm_command scorbot_output_msg_;
+   scorbot_control::scorbot_telemetry scorbot_input_msg_;
 
    
 };        // class

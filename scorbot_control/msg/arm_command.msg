@@ -1,4 +1,5 @@
-float32[36] current #amps
-float32[36] accel #deg/s^2
-float32[36] angle #deg
-uint32 msg_ctr # count sent msgs to detected missed messages 
+float32 cmd0
+float32 cmd1
+float32 cdm2 
+float32 cmd3
+float32 cdm4 

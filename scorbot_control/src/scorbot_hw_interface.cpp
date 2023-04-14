@@ -1,23 +1,27 @@
 #include <ros_control_boilerplate/generic_hw_interface.h>
 #include "scorbot_control/scorbot_hw_interface.h"
+#include <scorbot_control/arm_command.h>
+#include <scorbot_control/scorbot_telemetry.h>
+#include <ros_control_boilerplate/generic_hw_control_loop_1.h>
 
 
 
 namespace scorbot_namespace
 {
+
+  
 ScorbotHWInterface::ScorbotHWInterface(ros::NodeHandle& nh, urdf::Model* urdf_model)
   : ros_control_boilerplate::GenericHWInterface(nh, urdf_model)
 {
   telemetry_sub=nh.subscribe("/Mega/scorbot_telemetry",1,&ScorbotHWInterface::telemetryCallback, this);
  
-  cmd_pub=nh.advertise<scorbot_control::arm_command>("/Mega/armCmd",1);
+  cmd_pub=nh.advertise<scorbot_control::arm_command>("/scorbot_arduino_cmd",1, true);
 
   ROS_INFO("ScorbotHWInterface constructed");
  
 }
 
 void ScorbotHWInterface::telemetryCallback(const scorbot_control::scorbot_telemetry::ConstPtr &msg){
-
 
 
 
@@ -38,13 +42,13 @@ void ScorbotHWInterface::telemetryCallback(const scorbot_control::scorbot_teleme
  std::vector<double> joint_effort__;
  */
 
- /* joint_position_[0] = scorbot_input_msg_.joint0;
- joint_position_[1] = scorbot_input_msg_.joint0;
- joint_position_[2] = scorbot_input_msg_.joint0;
- joint_position_[3] = scorbot_input_msg_.joint0;
- joint_position_[4] = scorbot_input_msg_.joint0;
-
+ /*joint_position_[0] = scorbot_input_msg_.joint0;
+ joint_position_[1] = scorbot_input_msg_.joint1;
+ joint_position_[2] = scorbot_input_msg_.joint2;
+ joint_position_[3] = scorbot_input_msg_.joint3;
+ joint_position_[4] = scorbot_input_msg_.joint4;
  */
+ 
  /* joint_position_[0] = scorbot_input_msg_.joint0; */
 
 
@@ -82,11 +86,11 @@ void ScorbotHWInterface::write(ros::Duration& elapsed_time)
   //enforceLimits(elapsed_time);
 
  /* scorbot_output_msg_.cmd0 = joint_effort_command_[0];
- scorbot_output_msg_.cmd1 = joint_effort_command_[1];
- scorbot_output_msg_.cmd2 = joint_effort_command_[2];
- scorbot_output_msg_.cmd3 = joint_effort_command_[3];
- scorbot_output_msg_.cmd4 = joint_effort_command_[4];
-*/
+ scorbot_output_msg_.cmd0 = joint_effort_command_[1];
+ scorbot_output_msg_.cmd0 = joint_effort_command_[2];
+ scorbot_output_msg_.cmd0 = joint_effort_command_[3];
+ scorbot_output_msg_.cmd0 = joint_effort_command_[4];
+ */
 
  /*
  float32[6] current #amps
